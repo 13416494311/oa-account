@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.reimbursement.mapper.OaTravelMapper">
+
+    <resultMap type="OaTravel" id="OaTravelResult">
+        <result property="id"    column="id"    />
+        <result property="applyUuid"    column="apply_uuid"    />
+        <result property="hotelBillNum"    column="hotel_bill_num"    />
+        <result property="hotelFee"    column="hotel_fee"    />
+        <result property="cityFareBillNum"    column="city_fare_bill_num"    />
+        <result property="cityFareFee"    column="city_fare_fee"    />
+        <result property="postageBillNum"    column="postage_bill_num"    />
+        <result property="postageFee"    column="postage_fee"    />
+        <result property="officeSuppliesBillNum"    column="office_supplies_bill_num"    />
+        <result property="officeSuppliesFee"    column="office_supplies_fee"    />
+        <result property="bedSubsidyBillNum"    column="bed_subsidy_bill_num"    />
+        <result property="bedSubsidyFee"    column="bed_subsidy_fee"    />
+        <result property="otherBillNum"    column="other_bill_num"    />
+        <result property="otherFee"    column="other_fee"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectOaTravelVo">
+        select id, apply_uuid, hotel_bill_num, hotel_fee, city_fare_bill_num, city_fare_fee, postage_bill_num, postage_fee, office_supplies_bill_num, office_supplies_fee, bed_subsidy_bill_num, bed_subsidy_fee, other_bill_num, other_fee, create_time from oa_travel
+    </sql>
+
+    <select id="selectOaTravelList" parameterType="OaTravel" resultMap="OaTravelResult">
+        <include refid="selectOaTravelVo"/>
+        <where>
+        </where>
+    </select>
+
+    <select id="selectOaTravelById" parameterType="Long" resultMap="OaTravelResult">
+        <include refid="selectOaTravelVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectOaTravelByApplyUuid" parameterType="String" resultMap="OaTravelResult">
+        <include refid="selectOaTravelVo"/>
+        where apply_uuid = #{applyUuid}
+    </select>
+
+    <insert id="insertOaTravel" parameterType="OaTravel" useGeneratedKeys="true" keyProperty="id">
+        insert into oa_travel
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="applyUuid != null  and applyUuid != ''">apply_uuid,</if>
+            <if test="hotelBillNum != null ">hotel_bill_num,</if>
+            <if test="hotelFee != null ">hotel_fee,</if>
+            <if test="cityFareBillNum != null ">city_fare_bill_num,</if>
+            <if test="cityFareFee != null ">city_fare_fee,</if>
+            <if test="postageBillNum != null ">postage_bill_num,</if>
+            <if test="postageFee != null ">postage_fee,</if>
+            <if test="officeSuppliesBillNum != null ">office_supplies_bill_num,</if>
+            <if test="officeSuppliesFee != null ">office_supplies_fee,</if>
+            <if test="bedSubsidyBillNum != null ">bed_subsidy_bill_num,</if>
+            <if test="bedSubsidyFee != null ">bed_subsidy_fee,</if>
+            <if test="otherBillNum != null ">other_bill_num,</if>
+            <if test="otherFee != null ">other_fee,</if>
+            <if test="createTime != null ">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="applyUuid != null  and applyUuid != ''">#{applyUuid},</if>
+            <if test="hotelBillNum != null ">#{hotelBillNum},</if>
+            <if test="hotelFee != null ">#{hotelFee},</if>
+            <if test="cityFareBillNum != null ">#{cityFareBillNum},</if>
+            <if test="cityFareFee != null ">#{cityFareFee},</if>
+            <if test="postageBillNum != null ">#{postageBillNum},</if>
+            <if test="postageFee != null ">#{postageFee},</if>
+            <if test="officeSuppliesBillNum != null ">#{officeSuppliesBillNum},</if>
+            <if test="officeSuppliesFee != null ">#{officeSuppliesFee},</if>
+            <if test="bedSubsidyBillNum != null ">#{bedSubsidyBillNum},</if>
+            <if test="bedSubsidyFee != null ">#{bedSubsidyFee},</if>
+            <if test="otherBillNum != null ">#{otherBillNum},</if>
+            <if test="otherFee != null ">#{otherFee},</if>
+            <if test="createTime != null ">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOaTravel" parameterType="OaTravel">
+        update oa_travel
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="applyUuid != null  ">apply_uuid = #{applyUuid},</if>
+            <if test="hotelBillNum != null ">hotel_bill_num = #{hotelBillNum},</if>
+            <if test="hotelFee != null ">hotel_fee = #{hotelFee},</if>
+            <if test="cityFareBillNum != null ">city_fare_bill_num = #{cityFareBillNum},</if>
+            <if test="cityFareFee != null ">city_fare_fee = #{cityFareFee},</if>
+            <if test="postageBillNum != null ">postage_bill_num = #{postageBillNum},</if>
+            <if test="postageFee != null ">postage_fee = #{postageFee},</if>
+            <if test="officeSuppliesBillNum != null ">office_supplies_bill_num = #{officeSuppliesBillNum},</if>
+            <if test="officeSuppliesFee != null ">office_supplies_fee = #{officeSuppliesFee},</if>
+            <if test="bedSubsidyBillNum != null ">bed_subsidy_bill_num = #{bedSubsidyBillNum},</if>
+            <if test="bedSubsidyFee != null ">bed_subsidy_fee = #{bedSubsidyFee},</if>
+            <if test="otherBillNum != null ">other_bill_num = #{otherBillNum},</if>
+            <if test="otherFee != null ">other_fee = #{otherFee},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOaTravelById" parameterType="Long">
+        delete from oa_travel where id = #{id}
+    </delete>
+
+    <delete id="deleteOaTravelByApplyUuid" parameterType="String">
+        delete from oa_travel where apply_uuid= #{applyUuid}
+    </delete>
+
+    <delete id="deleteOaTravelByIds" parameterType="String">
+        delete from oa_travel where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteOaTravelByApplyUuids" parameterType="String">
+        delete from oa_travel where apply_uuid in
+        <foreach item="applyUuid" collection="array" open="(" separator="," close=")">
+            #{applyUuid}
+        </foreach>
+    </delete>
+
+</mapper>

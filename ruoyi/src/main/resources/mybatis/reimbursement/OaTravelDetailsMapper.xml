@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.reimbursement.mapper.OaTravelDetailsMapper">
+
+    <resultMap type="OaTravelDetails" id="OaTravelDetailsResult">
+        <result property="id"    column="id"    />
+        <result property="applyUuid"    column="apply_uuid"    />
+        <result property="startDate"    column="start_date"    />
+        <result property="endDate"    column="end_date"    />
+        <result property="startRegion"    column="start_region"    />
+        <result property="endRegion"    column="end_region"    />
+        <result property="tool"    column="tool"    />
+        <result property="trafficBillNum"    column="traffic_bill_num"    />
+        <result property="trafficFee"    column="traffic_fee"    />
+        <result property="days"    column="days"    />
+        <result property="subsidyFee"    column="subsidy_fee"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectOaTravelDetailsVo">
+        select id, apply_uuid, start_date, end_date, start_region, end_region, tool, traffic_bill_num, traffic_fee, days, subsidy_fee, create_time from oa_travel_details
+    </sql>
+
+    <select id="selectOaTravelDetailsList" parameterType="OaTravelDetails" resultMap="OaTravelDetailsResult">
+        <include refid="selectOaTravelDetailsVo"/>
+        <where>
+            <if test="applyUuid != null  and applyUuid != ''"> and apply_uuid = #{applyUuid} </if>
+        </where>
+    </select>
+
+    <select id="selectOaTravelDetailsById" parameterType="Long" resultMap="OaTravelDetailsResult">
+        <include refid="selectOaTravelDetailsVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertOaTravelDetails" parameterType="OaTravelDetails" useGeneratedKeys="true" keyProperty="id">
+        insert into oa_travel_details
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="applyUuid != null  and applyUuid != ''">apply_uuid,</if>
+            <if test="startDate != null ">start_date,</if>
+            <if test="endDate != null ">end_date,</if>
+            <if test="startRegion != null  and startRegion != ''">start_region,</if>
+            <if test="endRegion != null  and endRegion != ''">end_region,</if>
+            <if test="tool != null  and tool != ''">tool,</if>
+            <if test="trafficBillNum != null ">traffic_bill_num,</if>
+            <if test="trafficFee != null ">traffic_fee,</if>
+            <if test="days != null ">days,</if>
+            <if test="subsidyFee != null ">subsidy_fee,</if>
+            <if test="createTime != null ">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="applyUuid != null  and applyUuid != ''">#{applyUuid},</if>
+            <if test="startDate != null ">#{startDate},</if>
+            <if test="endDate != null ">#{endDate},</if>
+            <if test="startRegion != null  and startRegion != ''">#{startRegion},</if>
+            <if test="endRegion != null  and endRegion != ''">#{endRegion},</if>
+            <if test="tool != null  and tool != ''">#{tool},</if>
+            <if test="trafficBillNum != null ">#{trafficBillNum},</if>
+            <if test="trafficFee != null ">#{trafficFee},</if>
+            <if test="days != null ">#{days},</if>
+            <if test="subsidyFee != null ">#{subsidyFee},</if>
+            <if test="createTime != null ">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOaTravelDetails" parameterType="OaTravelDetails">
+        update oa_travel_details
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="applyUuid != null  ">apply_uuid = #{applyUuid},</if>
+            <if test="startDate != null ">start_date = #{startDate},</if>
+            <if test="endDate != null ">end_date = #{endDate},</if>
+            <if test="startRegion != null  ">start_region = #{startRegion},</if>
+            <if test="endRegion != null  ">end_region = #{endRegion},</if>
+            <if test="tool != null  ">tool = #{tool},</if>
+            <if test="trafficBillNum != null ">traffic_bill_num = #{trafficBillNum},</if>
+            <if test="trafficFee != null ">traffic_fee = #{trafficFee},</if>
+            <if test="days != null ">days = #{days},</if>
+            <if test="subsidyFee != null ">subsidy_fee = #{subsidyFee},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOaTravelDetailsById" parameterType="Long">
+        delete from oa_travel_details where id = #{id}
+    </delete>
+
+    <delete id="deleteOaTravelDetailsByIds" parameterType="String">
+        delete from oa_travel_details where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <delete id="deleteOaTravelDetailsByApplyUuids" parameterType="String">
+        delete from oa_travel_details where apply_uuid in
+        <foreach item="applyUuid" collection="array" open="(" separator="," close=")">
+            #{applyUuid}
+        </foreach>
+    </delete>
+
+</mapper>

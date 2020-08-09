@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.mapper.SysAttachmentMapper">
+
+    <resultMap type="SysAttachment" id="SysAttachmentResult">
+        <result property="id"    column="id"    />
+        <result property="uuid"    column="uuid"    />
+        <result property="fileDictType"    column="file_dict_type"    />
+        <result property="fileDictValue"    column="file_dict_value"    />
+        <result property="fileDicFlag"    column="file_dict_flag"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="filePath"    column="file_path"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectSysAttachmentVo">
+        select id, uuid, file_dict_type, file_dict_value,file_dict_flag, file_name, file_path,  create_time from sys_attachment
+    </sql>
+
+    <select id="selectSysAttachmentList" parameterType="SysAttachment" resultMap="SysAttachmentResult">
+        <include refid="selectSysAttachmentVo"/>
+        <where>
+            <if test="uuid != null  and uuid != ''"> and uuid = #{uuid}</if>
+            <if test="fileDictType != null  and fileDictType != ''"> and file_dict_type = #{fileDictType}</if>
+            <if test="fileDictValue != null  and fileDictValue != ''"> and file_dict_value = #{fileDictValue}</if>
+            <if test="fileDicFlag != null  and fileDicFlag != ''"> and file_dict_flag like concat('%', #{fileDicFlag}, '%')</if>
+            <if test="fileName != null  and fileName != ''"> and file_name like concat('%', #{fileName}, '%')</if>
+            <if test="filePath != null  and filePath != ''"> and file_path = #{filePath}</if>
+        </where>
+    </select>
+
+    <select id="selectSysAttAsSysDict" parameterType="SysAttachment" resultMap="SysAttachmentResult">
+        SELECT  file_dict_value,uuid ,file_dict_type
+        FROM
+        sys_attachment
+        WHERE
+        uuid = #{uuid}
+        and file_dict_type = #{fileDictType}
+        AND file_dict_flag ='0'
+        GROUP BY file_dict_value,uuid ,file_dict_type
+    </select>
+
+    <select id="selectSysAttachmentById" parameterType="Long" resultMap="SysAttachmentResult">
+        <include refid="selectSysAttachmentVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSysAttachment" parameterType="SysAttachment" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_attachment
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null  and uuid != ''">uuid,</if>
+            <if test="fileDictType != null  and fileDictType != ''">file_dict_type,</if>
+            <if test="fileDictValue != null  and fileDictValue != ''">file_dict_value,</if>
+            <if test="fileDicFlag != null  and fileDicFlag != ''">file_dict_flag,</if>
+            <if test="fileName != null  and fileName != ''">file_name,</if>
+            <if test="filePath != null  and filePath != ''">file_path,</if>
+            <if test="createTime != null ">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null  and uuid != ''">#{uuid},</if>
+            <if test="fileDictType != null  and fileDictType != ''">#{fileDictType},</if>
+            <if test="fileDictValue != null  and fileDictValue != ''">#{fileDictValue},</if>
+            <if test="fileDicFlag != null  and fileDicFlag != ''">#{fileDicFlag},</if>
+            <if test="fileName != null  and fileName != ''">#{fileName},</if>
+            <if test="filePath != null  and filePath != ''">#{filePath},</if>
+            <if test="createTime != null ">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysAttachment" parameterType="SysAttachment">
+        update sys_attachment
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="uuid != null  and uuid != ''">uuid = #{uuid},</if>
+            <if test="fileDictType != null  and fileDictType != ''">file_dict_type = #{fileDictType},</if>
+            <if test="fileDictValue != null  and fileDictValue != ''">file_dict_value = #{fileDictValue},</if>
+            <if test="fileDicFlag != null  and fileDicFlag != ''">file_dict_flag = #{fileDicFlag},</if>
+            <if test="fileName != null  and fileName != ''">file_name = #{fileName},</if>
+            <if test="filePath != null  and filePath != ''">file_path = #{filePath},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysAttachmentById" parameterType="Long">
+        delete from sys_attachment where id = #{id}
+    </delete>
+
+    <delete id="deleteSysAttachmentByIds" parameterType="String">
+        delete from sys_attachment where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

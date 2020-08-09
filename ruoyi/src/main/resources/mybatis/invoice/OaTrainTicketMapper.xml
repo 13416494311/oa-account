@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.invoice.mapper.OaTrainTicketMapper">
+
+    <resultMap type="OaTrainTicket" id="OaTrainTicketResult">
+        <result property="id"    column="id"    />
+        <result property="ticketUuid"    column="ticket_uuid"    />
+        <result property="uuid"    column="uuid"    />
+        <result property="accessWay"    column="access_way"    />
+        <result property="ticketNum"    column="ticket_num"    />
+        <result property="ticketScanNum"    column="ticket_scan_num"    />
+        <result property="trainNum"    column="train_num"    />
+        <result property="startingStation"    column="starting_station"    />
+        <result property="destinationStation"    column="destination_station"    />
+        <result property="dateTime"    column="date_time"    />
+        <result property="date"    column="date"    />
+        <result property="time"    column="time"    />
+        <result property="ticketRates"    column="ticket_rates"    />
+        <result property="seatCategory"    column="seat_category"    />
+        <result property="seatCategoryDesc"    column="seat_category_desc"    />
+        <result property="name"    column="name"    />
+        <result property="idNum"    column="id_num"    />
+        <result property="serialNumber"    column="serial_number"    />
+        <result property="salesStation"    column="sales_station"    />
+        <result property="seatNum"    column="seat_num"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="sysAttId"    column="sys_att_id"    />
+        <result property="repeatFlag"    column="repeat_flag"    />
+        <result property="abnormalFlag"    column="abnormal_flag"    />
+    </resultMap>
+
+    <sql id="selectOaTrainTicketVo">
+        select id, ticket_uuid, uuid, access_way, ticket_num,ticket_scan_num, train_num, starting_station,
+        destination_station, date_time, date, time, ticket_rates, seat_category,seat_category_desc, name,
+        id_num, serial_number, sales_station, seat_num, create_time, sys_att_id ,repeat_flag,abnormal_flag
+        from oa_train_ticket
+    </sql>
+
+    <select id="selectOaTrainTicketList" parameterType="OaTrainTicket" resultMap="OaTrainTicketResult">
+        <include refid="selectOaTrainTicketVo"/>
+        <where>
+            <if test="ticketUuid != null  and ticketUuid != ''"> and ticket_uuid = #{ticketUuid}</if>
+            <if test="uuid != null  and uuid != ''"> and uuid = #{uuid}</if>
+            <if test="accessWay != null  and accessWay != ''"> and access_way = #{accessWay}</if>
+            <if test="ticketNum != null  and ticketNum != ''"> and ticket_num = #{ticketNum}</if>
+            <if test="ticketScanNum != null  and ticketScanNum != ''"> and ticket_scan_num = #{ticketScanNum}</if>
+            <if test="trainNum != null  and trainNum != ''"> and train_num = #{trainNum}</if>
+            <if test="startingStation != null  and startingStation != ''"> and starting_station = #{startingStation}</if>
+            <if test="destinationStation != null  and destinationStation != ''"> and destination_station = #{destinationStation}</if>
+            <if test="dateTime != null "> and date_time = #{dateTime}</if>
+            <if test="date != null  and date != ''"> and date = #{date}</if>
+            <if test="time != null  and time != ''"> and time = #{time}</if>
+            <if test="ticketRates != null "> and ticket_rates = #{ticketRates}</if>
+            <if test="seatCategory != null  and seatCategory != ''"> and seat_category = #{seatCategory}</if>
+            <if test="seatCategoryDesc != null  and seatCategoryDesc != ''"> and seat_category_desc = #{seatCategoryDesc}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="idNum != null  and idNum != ''"> and id_num = #{idNum}</if>
+            <if test="serialNumber != null  and serialNumber != ''"> and serial_number = #{serialNumber}</if>
+            <if test="salesStation != null  and salesStation != ''"> and sales_station = #{salesStation}</if>
+            <if test="seatNum != null  and seatNum != ''"> and seat_num = #{seatNum}</if>
+            <if test="createTime != null "> and create_time = #{createTime}</if>
+            <if test="sysAttId != null "> and sys_att_id = #{sysAttId}</if>
+            <if test="repeatFlag != null "> and repeat_flag = #{repeatFlag}</if>
+            <if test="abnormalFlag != null "> and abnormal_flag = #{abnormalFlag}</if>
+        </where>
+    </select>
+
+    <select id="selectOaTrainTicketById" parameterType="Long" resultMap="OaTrainTicketResult">
+        <include refid="selectOaTrainTicketVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertOaTrainTicket" parameterType="OaTrainTicket" useGeneratedKeys="true" keyProperty="id">
+        insert into oa_train_ticket
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="ticketUuid != null  and ticketUuid != ''">ticket_uuid,</if>
+            <if test="uuid != null  and uuid != ''">uuid,</if>
+            <if test="accessWay != null  and accessWay != ''">access_way,</if>
+            <if test="ticketNum != null  and ticketNum != ''">ticket_num,</if>
+            <if test="ticketScanNum != null  and ticketScanNum != ''">ticket_scan_num,</if>
+            <if test="trainNum != null  and trainNum != ''">train_num,</if>
+            <if test="startingStation != null  and startingStation != ''">starting_station,</if>
+            <if test="destinationStation != null  and destinationStation != ''">destination_station,</if>
+            <if test="dateTime != null ">date_time,</if>
+            <if test="date != null  and date != ''">date,</if>
+            <if test="time != null  and time != ''">time,</if>
+            <if test="ticketRates != null ">ticket_rates,</if>
+            <if test="seatCategory != null  and seatCategory != ''">seat_category,</if>
+            <if test="seatCategoryDesc != null  and seatCategoryDesc != ''">seat_category_desc,</if>
+            <if test="name != null  and name != ''">name,</if>
+            <if test="idNum != null  and idNum != ''">id_num,</if>
+            <if test="serialNumber != null  and serialNumber != ''">serial_number,</if>
+            <if test="salesStation != null  and salesStation != ''">sales_station,</if>
+            <if test="seatNum != null  and seatNum != ''">seat_num,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="sysAttId != null ">sys_att_id,</if>
+            <if test="repeatFlag != null  and repeatFlag != ''">repeat_flag,</if>
+            <if test="abnormalFlag != null  and abnormalFlag != ''">abnormal_flag,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="ticketUuid != null  and ticketUuid != ''">#{ticketUuid},</if>
+            <if test="uuid != null  and uuid != ''">#{uuid},</if>
+            <if test="accessWay != null  and accessWay != ''">#{accessWay},</if>
+            <if test="ticketNum != null  and ticketNum != ''">#{ticketNum},</if>
+            <if test="ticketScanNum != null  and ticketScanNum != ''">#{ticketScanNum},</if>
+            <if test="trainNum != null  and trainNum != ''">#{trainNum},</if>
+            <if test="startingStation != null  and startingStation != ''">#{startingStation},</if>
+            <if test="destinationStation != null  and destinationStation != ''">#{destinationStation},</if>
+            <if test="dateTime != null ">#{dateTime},</if>
+            <if test="date != null  and date != ''">#{date},</if>
+            <if test="time != null  and time != ''">#{time},</if>
+            <if test="ticketRates != null ">#{ticketRates},</if>
+            <if test="seatCategory != null  and seatCategory != ''">#{seatCategory},</if>
+            <if test="seatCategoryDesc != null  and seatCategoryDesc != ''">#{seatCategoryDesc},</if>
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="idNum != null  and idNum != ''">#{idNum},</if>
+            <if test="serialNumber != null  and serialNumber != ''">#{serialNumber},</if>
+            <if test="salesStation != null  and salesStation != ''">#{salesStation},</if>
+            <if test="seatNum != null  and seatNum != ''">#{seatNum},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="sysAttId != null ">#{sysAttId},</if>
+            <if test="repeatFlag != null ">#{repeatFlag},</if>
+            <if test="abnormalFlag != null ">#{abnormalFlag},</if>
+        </trim>
+    </insert>
+
+    <update id="updateOaTrainTicket" parameterType="OaTrainTicket">
+        update oa_train_ticket
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="ticketUuid != null">ticket_uuid = #{ticketUuid},</if>
+            <if test="uuid != null">uuid = #{uuid},</if>
+            <if test="accessWay != null">access_way = #{accessWay},</if>
+            <if test="ticketNum != null">ticket_num = #{ticketNum},</if>
+            <if test="ticketScanNum != null">ticket_scan_num = #{ticketScanNum},</if>
+            <if test="trainNum != null">train_num = #{trainNum},</if>
+            <if test="startingStation != null">starting_station = #{startingStation},</if>
+            <if test="destinationStation != null">destination_station = #{destinationStation},</if>
+            <if test="dateTime != null">date_time = #{dateTime},</if>
+            <if test="date != null ">date = #{date},</if>
+            <if test="time != null ">time = #{time},</if>
+            <if test="ticketRates != null">ticket_rates = #{ticketRates},</if>
+            <if test="seatCategory != null">seat_category = #{seatCategory},</if>
+            <if test="seatCategoryDesc != null">seat_category_desc = #{seatCategoryDesc},</if>
+            <if test="name != null ">name = #{name},</if>
+            <if test="idNum != null">id_num = #{idNum},</if>
+            <if test="serialNumber != null">serial_number = #{serialNumber},</if>
+            <if test="salesStation != null">sales_station = #{salesStation},</if>
+            <if test="seatNum != null">seat_num = #{seatNum},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="sysAttId != null">sys_att_id = #{sysAttId},</if>
+            <if test="repeatFlag != null ">repeat_flag = #{repeatFlag},</if>
+            <if test="abnormalFlag != null ">abnormal_flag = #{abnormalFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOaTrainTicketById" parameterType="Long">
+        delete from oa_train_ticket where id = #{id}
+    </delete>
+
+    <delete id="deleteOaTrainTicketByIds" parameterType="String">
+        delete from oa_train_ticket where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

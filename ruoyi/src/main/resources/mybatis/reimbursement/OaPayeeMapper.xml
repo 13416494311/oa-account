@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.reimbursement.mapper.OaPayeeMapper">
+
+    <resultMap type="OaPayee" id="OaPayeeResult">
+        <result property="id" column="id"/>
+        <result property="applyUuid" column="apply_uuid"/>
+        <result property="payee" column="payee"/>
+        <result property="payeeType" column="payee_type"/>
+        <result property="cardNo" column="card_no"/>
+        <result property="phone" column="phone"/>
+        <result property="bank" column="bank"/>
+        <result property="bankNo" column="bank_no"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+    <sql id="selectOaPayeeVo">
+        select id, apply_uuid, payee, payee_type, card_no, phone, bank, bank_no, create_time from oa_payee
+    </sql>
+
+    <select id="selectOaPayeeList" parameterType="OaPayee" resultMap="OaPayeeResult">
+        <include refid="selectOaPayeeVo"/>
+        <where>
+            <if test="applyUuid != null  and applyUuid != ''">and apply_uuid = #{applyUuid}</if>
+            <if test="payee != null  and payee != ''">and payee = #{payee}</if>
+            <if test="payeeType != null  and payeeType != ''">and payee_type = #{payeeType}</if>
+            <if test="cardNo != null  and cardNo != ''">and card_no = #{cardNo}</if>
+            <if test="phone != null  and phone != ''">and phone = #{phone}</if>
+            <if test="bank != null  and bank != ''">and bank = #{bank}</if>
+            <if test="bankNo != null  and bankNo != ''">and bank_no = #{bankNo}</if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="remoteSearch" parameterType="OaPayee" resultMap="OaPayeeResult">
+        select
+            distinct trmp.bank_no
+        from (select * from oa_payee order by create_time desc) trmp
+        where
+            trmp.payee = #{payee}
+            and trmp.bank_no is  not null
+        <if test="bankNo != null  and bankNo != ''">
+            and trmp.bank_no like concat('%', #{bankNo}, '%')
+        </if>
+    </select>
+
+    <select id="selectOaPayeeById" parameterType="Long" resultMap="OaPayeeResult">
+        <include refid="selectOaPayeeVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectOaPayeeByApplyUuid" parameterType="String" resultMap="OaPayeeResult">
+        <include refid="selectOaPayeeVo"/>
+        where apply_uuid = #{applyUuid}
+    </select>
+
+    <insert id="insertOaPayee" parameterType="OaPayee" useGeneratedKeys="true" keyProperty="id">
+        insert into oa_payee
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="applyUuid != null  and applyUuid != ''">apply_uuid,</if>
+            <if test="payee != null  and payee != ''">payee,</if>
+            <if test="payeeType != null  and payeeType != ''">payee_type,</if>
+            <if test="cardNo != null  and cardNo != ''">card_no,</if>
+            <if test="phone != null  and phone != ''">phone,</if>
+            <if test="bank != null  and bank != ''">bank,</if>
+            <if test="bankNo != null  and bankNo != ''">bank_no,</if>
+            <if test="createTime != null ">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="applyUuid != null  and applyUuid != ''">#{applyUuid},</if>
+            <if test="payee != null  and payee != ''">#{payee},</if>
+            <if test="payeeType != null  and payeeType != ''">#{payeeType},</if>
+            <if test="cardNo != null  and cardNo != ''">#{cardNo},</if>
+            <if test="phone != null  and phone != ''">#{phone},</if>
+            <if test="bank != null  and bank != ''">#{bank},</if>
+            <if test="bankNo != null  and bankNo != ''">#{bankNo},</if>
+            <if test="createTime != null ">#{createTime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateOaPayee" parameterType="OaPayee">
+        update oa_payee
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="applyUuid != null  ">apply_uuid = #{applyUuid},</if>
+            <if test="payee != null  ">payee = #{payee},</if>
+            <if test="payeeType != null ">payee_type = #{payeeType},</if>
+            <if test="cardNo != null  ">card_no = #{cardNo},</if>
+            <if test="phone != null ">phone = #{phone},</if>
+            <if test="bank != null  ">bank = #{bank},</if>
+            <if test="bankNo != null  ">bank_no = #{bankNo},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOaPayeeById" parameterType="Long">
+        delete from oa_payee where id = #{id}
+    </delete>
+
+    <delete id="deleteOaPayeeByIds" parameterType="String">
+        delete from oa_payee where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

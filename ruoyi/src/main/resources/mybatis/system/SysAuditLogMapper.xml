@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.mapper.SysAuditLogMapper">
+
+    <resultMap type="SysAuditLog" id="SysAuditLogResult">
+        <result property="id"    column="id"    />
+        <result property="uuid"    column="uuid"    />
+        <result property="userId"    column="user_id"    />
+        <result property="state"    column="state"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="reason"    column="reason"    />
+    </resultMap>
+
+    <sql id="selectSysAuditLogVo">
+        select id, uuid, user_id, state, create_time, reason from sys_audit_log
+    </sql>
+
+    <select id="selectSysAuditLogList" parameterType="SysAuditLog" resultMap="SysAuditLogResult">
+        <include refid="selectSysAuditLogVo"/>
+        <where>
+            <if test="uuid != null  and uuid != ''"> and uuid = #{uuid}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="state != null  and state != ''"> and state = #{state}</if>
+            <if test="reason != null  and reason != ''"> and reason = #{reason}</if>
+        </where>
+        order by create_time desc
+    </select>
+
+    <select id="selectSysAuditLogById" parameterType="Long" resultMap="SysAuditLogResult">
+        <include refid="selectSysAuditLogVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertSysAuditLog" parameterType="SysAuditLog">
+        insert into sys_audit_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null ">id,</if>
+            <if test="uuid != null  and uuid != ''">uuid,</if>
+            <if test="userId != null ">user_id,</if>
+            <if test="state != null  and state != ''">state,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="reason != null  and reason != ''">reason,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null ">#{id},</if>
+            <if test="uuid != null  and uuid != ''">#{uuid},</if>
+            <if test="userId != null ">#{userId},</if>
+            <if test="state != null  and state != ''">#{state},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="reason != null  and reason != ''">#{reason},</if>
+         </trim>
+    </insert>
+
+    <update id="updateSysAuditLog" parameterType="SysAuditLog">
+        update sys_audit_log
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="uuid != null  and uuid != ''">uuid = #{uuid},</if>
+            <if test="userId != null ">user_id = #{userId},</if>
+            <if test="state != null  and state != ''">state = #{state},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="reason != null  and reason != ''">reason = #{reason},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysAuditLogById" parameterType="Long">
+        delete from sys_audit_log where id = #{id}
+    </delete>
+
+    <delete id="deleteSysAuditLogByIds" parameterType="String">
+        delete from sys_audit_log where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

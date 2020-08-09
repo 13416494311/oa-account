@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.mapper.SysRegionMapper">
+
+    <resultMap type="SysRegion" id="SysRegionResult">
+        <result property="id"    column="id"    />
+        <result property="regionCode"    column="region_code"    />
+        <result property="regionName"    column="region_name"    />
+        <result property="parentRegionCode"    column="parent_region_code"    />
+    </resultMap>
+
+    <resultMap type="com.ruoyi.common.utils.JsonTreeData" id="SysRegionTreeResult">
+        <result property="value"    column="value"    />
+        <result property="parentValue"    column="parent_value"    />
+        <result property="label"    column="label"    />
+    </resultMap>
+
+    <sql id="selectSysRegionVo">
+        select id, region_code, region_name, parent_region_code from sys_region
+    </sql>
+
+    <select id="selectSysRegionList" parameterType="SysRegion" resultMap="SysRegionResult">
+        <include refid="selectSysRegionVo"/>
+        <where>
+            <if test="regionCode != null  and regionCode != ''"> and region_code = #{regionCode}</if>
+            <if test="parentRegionCode != null  and parentRegionCode != ''"> and parent_region_code = #{parentRegionCode}</if>
+        </where>
+    </select>
+
+    <select id="selectSysRegionById" parameterType="Long" resultMap="SysRegionResult">
+        <include refid="selectSysRegionVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="getRegionTree" resultType="com.ruoyi.common.utils.JsonTreeData" resultMap="SysRegionTreeResult">
+		SELECT
+			region_code as value,
+			region_name as label,
+			parent_region_code as parent_value
+		FROM
+			sys_region
+		ORDER BY region_code ASC
+	</select>
+
+
+</mapper>

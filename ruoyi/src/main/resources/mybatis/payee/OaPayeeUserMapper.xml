@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.payee.mapper.OaPayeeUserMapper">
+
+    <resultMap type="OaPayeeUser" id="OaPayeeUserResult">
+        <result property="id"    column="id"    />
+        <result property="userName"    column="user_name"    />
+        <result property="userCard"    column="user_card"    />
+        <result property="bank"    column="bank"    />
+        <result property="bankAccount"    column="bank_account"    />
+        <result property="address"    column="address"    />
+        <result property="phone"    column="phone"    />
+        <result property="telephone"    column="telephone"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectOaPayeeUserVo">
+        select u.id, u.user_name, u.user_card, u.bank, u.bank_account, u.address, u.phone, u.telephone, u.dept_id, u.user_id, u.create_time from oa_payee_user u
+    </sql>
+
+    <select id="selectOaPayeeUserList" parameterType="OaPayeeUser" resultMap="OaPayeeUserResult">
+        <include refid="selectOaPayeeUserVo"/>
+        <where>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="userCard != null  and userCard != ''"> and user_card like concat('%', #{userCard}, '%')</if>
+            <if test="dataScope != null  and dataScope != ''"> ${dataScope}</if>
+        </where>
+    </select>
+
+    <select id="selectOaPayeeUserById" parameterType="Long" resultMap="OaPayeeUserResult">
+        <include refid="selectOaPayeeUserVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertOaPayeeUser" parameterType="OaPayeeUser" useGeneratedKeys="true" keyProperty="id">
+        insert into oa_payee_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userName != null  and userName != ''">user_name,</if>
+            <if test="userCard != null  and userCard != ''">user_card,</if>
+            <if test="bank != null  and bank != ''">bank,</if>
+            <if test="bankAccount != null  and bankAccount != ''">bank_account,</if>
+            <if test="address != null  and address != ''">address,</if>
+            <if test="phone != null  and phone != ''">phone,</if>
+            <if test="telephone != null  and telephone != ''">telephone,</if>
+            <if test="deptId != null ">dept_id,</if>
+            <if test="userId != null ">user_id,</if>
+            <if test="createTime != null ">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userName != null  and userName != ''">#{userName},</if>
+            <if test="userCard != null  and userCard != ''">#{userCard},</if>
+            <if test="bank != null  and bank != ''">#{bank},</if>
+            <if test="bankAccount != null  and bankAccount != ''">#{bankAccount},</if>
+            <if test="address != null  and address != ''">#{address},</if>
+            <if test="phone != null  and phone != ''">#{phone},</if>
+            <if test="telephone != null  and telephone != ''">#{telephone},</if>
+            <if test="deptId != null ">#{deptId},</if>
+            <if test="userId != null ">#{userId},</if>
+            <if test="createTime != null ">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOaPayeeUser" parameterType="OaPayeeUser">
+        update oa_payee_user
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userName != null  and userName != ''">user_name = #{userName},</if>
+            <if test="userCard != null  and userCard != ''">user_card = #{userCard},</if>
+            <if test="bank != null  and bank != ''">bank = #{bank},</if>
+            <if test="bankAccount != null  and bankAccount != ''">bank_account = #{bankAccount},</if>
+            <if test="address != null  and address != ''">address = #{address},</if>
+            <if test="phone != null  and phone != ''">phone = #{phone},</if>
+            <if test="telephone != null  and telephone != ''">telephone = #{telephone},</if>
+            <if test="deptId != null ">dept_id = #{deptId},</if>
+            <if test="userId != null ">user_id = #{userId},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOaPayeeUserById" parameterType="Long">
+        delete from oa_payee_user where id = #{id}
+    </delete>
+
+    <delete id="deleteOaPayeeUserByIds" parameterType="String">
+        delete from oa_payee_user where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.reimbursement.mapper.OaReimbursementApplyMapper">
+
+    <resultMap type="OaReimbursementApply" id="OaReimbursementApplyResult">
+        <result property="id" column="id"/>
+        <result property="uuid" column="uuid"/>
+        <result property="type" column="type"/>
+        <result property="reimburser" column="reimburser"/>
+        <result property="deptName" column="dept_name"/>
+        <result property="topic" column="topic"/>
+        <result property="operator" column="operator"/>
+        <result property="reason" column="reason"/>
+        <result property="totalMoney" column="total_money"/>
+        <result property="auditState" column="audit_state"/>
+        <result property="createDeptId" column="dept_id"/>
+        <result property="createUserId" column="user_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="payeeType" column="payee_type"/>
+        <result property="bank" column="bank"/>
+        <result property="bankNo" column="bank_no"/>
+    </resultMap>
+
+    <sql id="selectOaReimbursementApplyVo">
+        select id, uuid, type, reimburser, dept_name, topic, operator, reason,
+        total_money, audit_state,create_user_id,create_dept_id, create_time,
+        payee_type, bank, bank_no
+        from oa_reimbursement_apply
+    </sql>
+
+    <sql id="selectOaReimbursementApply">
+        select apply.id, apply.uuid, apply.type, apply.reimburser, apply.dept_name, apply.topic,
+        apply.operator, apply.reason,apply.total_money, apply.audit_state,apply.create_user_id,
+        apply.create_dept_id, apply.create_time, apply.payee_type, apply.bank, apply.bank_no
+        from oa_reimbursement_apply apply
+    </sql>
+
+    <select id="selectOaReimbursementApplyList" parameterType="OaReimbursementApply"
+            resultMap="OaReimbursementApplyResult">
+        <include refid="selectOaReimbursementApply"/>
+        left join sys_user sysUser on sysUser.user_id = apply.create_user_id
+        <where>
+            <if test="uuid != null  and uuid != ''">and apply.uuid = #{uuid}</if>
+            <if test="type != null  and type != ''">and apply.type = #{type}</if>
+            <if test="reimburser != null  and reimburser != ''">
+            and apply.reimburser like concat('%', #{reimburser}, '%')
+            </if>
+            <if test="deptName != null  and deptName != ''">
+            and apply.dept_name like concat('%', #{deptName}, '%')
+            </if>
+            <if test="topic != null  and topic != ''">
+            and apply.topic like concat('%', #{topic}, '%')
+            </if>
+            <if test="operator != null  and operator != ''">
+            and apply.operator like concat('%', #{operator}, '%')
+            </if>
+            <if test="reason != null  and reason != ''">
+            and apply.reason like concat('%', #{reason}, '%')
+            </if>
+            <if test="keyWord != null  and keyWord != ''">
+                and (
+                   apply.reimburser like concat('%', #{keyWord}, '%')
+                or apply.dept_name like concat('%', #{keyWord}, '%')
+                or apply.topic like concat('%', #{keyWord}, '%')
+                or apply.operator like concat('%', #{keyWord}, '%')
+                or apply.reason like concat('%', #{keyWord}, '%')
+                or exists(
+                select 1 from oa_invoice where uuid = apply.uuid and invoice_num like concat('%', #{keyWord}, '%')
+                )
+                or exists(
+                select 1 from oa_quota_invoice where uuid = apply.uuid and invoice_number like concat('%', #{keyWord}, '%')
+                )
+                or exists(
+                select 1 from oa_train_ticket where uuid = apply.uuid and ticket_num like concat('%', #{keyWord}, '%')
+                )
+                or exists(
+                select 1 from oa_air_ticket where uuid = apply.uuid and ticket_number like concat('%', #{keyWord}, '%')
+                )
+                or exists(
+                select 1 from oa_taix_ticket where uuid = apply.uuid and invoice_num like concat('%', #{keyWord}, '%')
+                )
+                or exists(
+                select 1 from oa_other_invoice where uuid = apply.uuid and invoice_number like concat('%', #{keyWord}, '%')
+                )
+                )
+            </if>
+            <if test="totalMoney != null ">and apply.total_money = #{totalMoney}</if>
+            <if test="createDeptId != null ">and apply.create_dept_id = #{createDeptId}</if>
+            <if test="createUserId != null ">and apply.create_user_id = #{createUserId}</if>
+            <if test="auditState != null  and auditState != ''">and apply.audit_state = #{auditState}</if>
+            <if test="payeeType != null  and payeeType != ''">and apply.payee_type = #{payeeType}</if>
+            <if test="bank != null  and bank != ''">and apply.bank = #{bank}</if>
+            <if test="bankNo != null  and bankNo != ''">and apply.bank_no = #{bankNo}</if>
+            <if test="dataScope != null  and dataScope != ''">
+                 ${dataScope}
+            </if>
+        </where>
+        order by apply.create_time desc
+    </select>
+
+    <select id="remoteSearch" parameterType="OaReimbursementApply"
+            resultMap="OaReimbursementApplyResult">
+        select
+        <trim  suffixOverrides=",">
+            <if test="reimburser != null  and reimburser != ''">
+                distinct temp.reimburser ,
+            </if>
+            <if test="deptName != null  and deptName != ''">
+                distinct temp.dept_name ,
+            </if>
+            <if test="topic != null  and topic != ''">
+                distinct temp.topic ,
+            </if>
+            <if test="operator != null  and operator != ''">
+                distinct temp.operator ,
+            </if>
+        </trim>
+        from (select * from oa_reimbursement_apply order by create_time desc) temp
+        <where>
+            <if test="uuid != null  and uuid != ''">and temp.uuid = #{uuid}</if>
+            <if test="type != null  and type != ''">and temp.type = #{type}</if>
+            <if test="reimburser != null  and reimburser != ''">
+                and temp.reimburser like concat('%', #{reimburser}, '%')
+            </if>
+            <if test="deptName != null  and deptName != ''">
+                and temp.dept_name like concat('%', #{deptName}, '%')
+            </if>
+            <if test="topic != null  and topic != ''">
+                and temp.topic like concat('%', #{topic}, '%')
+            </if>
+            <if test="operator != null  and operator != ''">
+                and temp.operator like concat('%', #{operator}, '%')
+            </if>
+            <if test="reason != null  and reason != ''">
+                and temp.reason like concat('%', #{reason}, '%')
+            </if>
+            <if test="totalMoney != null ">and temp.total_money = #{totalMoney}</if>
+            <if test="auditState != null  and auditState != ''">and temp.audit_state = #{auditState}</if>
+            <if test="payeeType != null  and payeeType != ''">and temp.payee_type = #{payeeType}</if>
+            <if test="bank != null  and bank != ''">and temp.bank = #{bank}</if>
+            <if test="bankNo != null  and bankNo != ''">and temp.bank_no = #{bankNo}</if>
+        </where>
+    </select>
+
+    <select id="selectOaReimbursementApplyById" parameterType="Long" resultMap="OaReimbursementApplyResult">
+        <include refid="selectOaReimbursementApplyVo"/>
+        where id = #{id}
+        order by create_time desc
+    </select>
+
+    <select id="selectOaReimbursementApplyByUuid" parameterType="String" resultMap="OaReimbursementApplyResult">
+        <include refid="selectOaReimbursementApplyVo"/>
+        where uuid = #{uuid}
+        order by create_time desc
+    </select>
+
+    <insert id="insertOaReimbursementApply" parameterType="OaReimbursementApply" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into oa_reimbursement_apply
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null  and uuid != ''">uuid,</if>
+            <if test="type != null  and type != ''">type,</if>
+            <if test="reimburser != null  and reimburser != ''">reimburser,</if>
+            <if test="deptName != null  and deptName != ''">dept_name,</if>
+            <if test="topic != null  and topic != ''">topic,</if>
+            <if test="operator != null  and operator != ''">operator,</if>
+            <if test="reason != null  and reason != ''">reason,</if>
+            <if test="totalMoney != null ">total_money,</if>
+            <if test="auditState != null  and auditState != ''">audit_state,</if>
+            <if test="createDeptId != null  and createDeptId != '' "> create_dept_id , </if>
+            <if test="createUserId != null  and createUserId != '' ">create_user_id ,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="payeeType != null  and payeeType != ''">payee_type,</if>
+            <if test="bank != null  and bank != ''">bank,</if>
+            <if test="bankNo != null  and bankNo != ''">bank_no,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null  and uuid != ''">#{uuid},</if>
+            <if test="type != null  and type != ''">#{type},</if>
+            <if test="reimburser != null  and reimburser != ''">#{reimburser},</if>
+            <if test="deptName != null  and deptName != ''">#{deptName},</if>
+            <if test="topic != null  and topic != ''">#{topic},</if>
+            <if test="operator != null  and operator != ''">#{operator},</if>
+            <if test="reason != null  and reason != ''">#{reason},</if>
+            <if test="totalMoney != null ">#{totalMoney},</if>
+            <if test="auditState != null  and auditState != ''">#{auditState},</if>
+            <if test="createDeptId != null  and createDeptId != '' "> #{createDeptId} , </if>
+            <if test="createUserId != null  and createUserId != '' ">#{createUserId} ,</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="payeeType != null  and payeeType != ''">#{payeeType},</if>
+            <if test="bank != null  and bank != ''">#{bank},</if>
+            <if test="bankNo != null  and bankNo != ''">#{bankNo},</if>
+        </trim>
+    </insert>
+
+    <update id="updateOaReimbursementApply" parameterType="OaReimbursementApply">
+        update oa_reimbursement_apply
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="uuid != null  ">uuid = #{uuid},</if>
+            <if test="type != null  ">type = #{type},</if>
+            <if test="reimburser != null ">reimburser = #{reimburser},</if>
+            <if test="deptName != null  ">dept_name = #{deptName},</if>
+            <if test="topic != null  ">topic = #{topic},</if>
+            <if test="operator != null ">operator = #{operator},</if>
+            <if test="reason != null  ">reason = #{reason},</if>
+            <if test="totalMoney != null ">total_money = #{totalMoney},</if>
+            <if test="createDeptId != null  ">create_dept_id = #{createDeptId},</if>
+            <if test="createUserId != null  ">create_user_id = #{createUserId},</if>
+            <if test="auditState != null ">audit_state = #{auditState},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="payeeType != null ">payee_type = #{payeeType},</if>
+            <if test="bank != null  ">bank = #{bank},</if>
+            <if test="bankNo != null  ">bank_no = #{bankNo},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOaReimbursementApplyById" parameterType="Long">
+        delete from oa_reimbursement_apply where id = #{id}
+    </delete>
+
+    <delete id="deleteOaReimbursementApplyByIds" parameterType="String">
+        delete from oa_reimbursement_apply where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

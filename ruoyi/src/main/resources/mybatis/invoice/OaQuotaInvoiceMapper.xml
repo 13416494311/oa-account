@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.invoice.mapper.OaQuotaInvoiceMapper">
+
+    <resultMap type="OaQuotaInvoice" id="OaQuotaInvoiceResult">
+        <result property="id"    column="id"    />
+        <result property="invoiceUuid"    column="invoice_uuid"    />
+        <result property="uuid"    column="uuid"    />
+        <result property="accessWay"    column="access_way"    />
+        <result property="invoiceCode"    column="invoice_code"    />
+        <result property="invoiceNumber"    column="invoice_number"    />
+        <result property="invoiceScanNumber"    column="invoice_scan_number"    />
+        <result property="invoiceRate"    column="invoice_rate"    />
+        <result property="invoiceMoney"    column="invoice_money"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="sysAttId"    column="sys_att_id"    />
+        <result property="repeatFlag"    column="repeat_flag"    />
+        <result property="abnormalFlag"    column="abnormal_flag"    />
+    </resultMap>
+
+    <sql id="selectOaQuotaInvoiceVo">
+        select id, invoice_uuid, uuid, access_way, invoice_code, invoice_number,invoice_scan_number,
+        invoice_rate, invoice_money, create_time , sys_att_id,repeat_flag,abnormal_flag
+        from oa_quota_invoice
+    </sql>
+
+    <select id="selectOaQuotaInvoiceList" parameterType="OaQuotaInvoice" resultMap="OaQuotaInvoiceResult">
+        <include refid="selectOaQuotaInvoiceVo"/>
+        <where>
+            <if test="invoiceUuid != null  and invoiceUuid != ''"> and invoice_uuid = #{invoiceUuid}</if>
+            <if test="uuid != null  and uuid != ''"> and uuid = #{uuid}</if>
+            <if test="accessWay != null  and accessWay != ''"> and access_way = #{accessWay}</if>
+            <if test="invoiceCode != null  and invoiceCode != ''"> and invoice_code = #{invoiceCode}</if>
+            <if test="invoiceNumber != null  and invoiceNumber != ''"> and invoice_number = #{invoiceNumber}</if>
+            <if test="invoiceScanNumber != null  and invoiceScanNumber != ''"> and invoice_scan_number = #{invoiceScanNumber}</if>
+            <if test="invoiceRate != null  and invoiceRate != ''"> and invoice_rate = #{invoiceRate}</if>
+            <if test="invoiceMoney != null "> and invoice_money = #{invoiceMoney}</if>
+            <if test="sysAttId != null "> and sys_att_id = #{sysAttId}</if>
+            <if test="repeatFlag != null "> and repeat_flag = #{repeatFlag}</if>
+            <if test="abnormalFlag != null "> and abnormal_flag = #{abnormalFlag}</if>
+        </where>
+    </select>
+
+    <select id="selectOaQuotaInvoiceById" parameterType="Long" resultMap="OaQuotaInvoiceResult">
+        <include refid="selectOaQuotaInvoiceVo"/>
+        where id = #{id}
+    </select>
+
+    <select id="selectOaQuotaInvoiceByInvoiceNumber" parameterType="String" resultMap="OaQuotaInvoiceResult">
+        <include refid="selectOaQuotaInvoiceVo"/>
+        where invoice_number = #{invoiceNumber}
+    </select>
+
+    <insert id="insertOaQuotaInvoice" parameterType="OaQuotaInvoice" useGeneratedKeys="true" keyProperty="id">
+        insert into oa_quota_invoice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="invoiceUuid != null  and invoiceUuid != ''">invoice_uuid,</if>
+            <if test="uuid != null  and uuid != ''">uuid,</if>
+            <if test="accessWay != null  and accessWay != ''">access_way,</if>
+            <if test="invoiceCode != null  and invoiceCode != ''">invoice_code,</if>
+            <if test="invoiceNumber != null  and invoiceNumber != ''">invoice_number,</if>
+            <if test="invoiceScanNumber != null  and invoiceScanNumber != ''">invoice_scan_number,</if>
+            <if test="invoiceRate != null  and invoiceRate != ''">invoice_rate,</if>
+            <if test="invoiceMoney != null ">invoice_money,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="sysAttId != null  and sysAttId != ''">sys_att_id,</if>
+            <if test="repeatFlag != null  and repeatFlag != ''">repeat_flag,</if>
+            <if test="abnormalFlag != null  and abnormalFlag != ''">abnormal_flag,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="invoiceUuid != null  and invoiceUuid != ''">#{invoiceUuid},</if>
+            <if test="uuid != null  and uuid != ''">#{uuid},</if>
+            <if test="accessWay != null  and accessWay != ''">#{accessWay},</if>
+            <if test="invoiceCode != null  and invoiceCode != ''">#{invoiceCode},</if>
+            <if test="invoiceNumber != null  and invoiceNumber != ''">#{invoiceNumber},</if>
+            <if test="invoiceScanNumber != null  and invoiceScanNumber != ''">#{invoiceScanNumber},</if>
+            <if test="invoiceRate != null  and invoiceRate != ''">#{invoiceRate},</if>
+            <if test="invoiceMoney != null ">#{invoiceMoney},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="sysAttId != null ">#{sysAttId},</if>
+            <if test="repeatFlag != null ">#{repeatFlag},</if>
+            <if test="abnormalFlag != null ">#{abnormalFlag},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOaQuotaInvoice" parameterType="OaQuotaInvoice">
+        update oa_quota_invoice
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="invoiceUuid != null">invoice_uuid = #{invoiceUuid},</if>
+            <if test="uuid != null">uuid = #{uuid},</if>
+            <if test="accessWay != null">access_way = #{accessWay},</if>
+            <if test="invoiceCode != null">invoice_code = #{invoiceCode},</if>
+            <if test="invoiceNumber != null ">invoice_number = #{invoiceNumber},</if>
+            <if test="invoiceScanNumber != null ">invoice_scan_number = #{invoiceScanNumber},</if>
+            <if test="invoiceRate != null ">invoice_rate = #{invoiceRate},</if>
+            <if test="invoiceMoney != null ">invoice_money = #{invoiceMoney},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="sysAttId != null">sys_att_id = #{sysAttId},</if>
+            <if test="repeatFlag != null ">repeat_flag = #{repeatFlag},</if>
+            <if test="abnormalFlag != null ">abnormal_flag = #{abnormalFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOaQuotaInvoiceById" parameterType="Long">
+        delete from oa_quota_invoice where id = #{id}
+    </delete>
+
+    <delete id="deleteOaQuotaInvoiceByIds" parameterType="String">
+        delete from oa_quota_invoice where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

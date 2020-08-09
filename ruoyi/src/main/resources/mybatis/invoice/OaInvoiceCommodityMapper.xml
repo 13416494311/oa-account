@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.invoice.mapper.OaInvoiceCommodityMapper">
+
+    <resultMap type="OaInvoiceCommodity" id="OaInvoiceCommodityResult">
+        <result property="id"    column="id"    />
+        <result property="invoiceUuid"    column="invoice_uuid"    />
+        <result property="name"    column="name"    />
+        <result property="type"    column="type"    />
+        <result property="unit"    column="unit"    />
+        <result property="num"    column="num"    />
+        <result property="price"    column="price"    />
+        <result property="amount"    column="amount"    />
+        <result property="taxRate"    column="tax_rate"    />
+        <result property="tax"    column="tax"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectOaInvoiceCommodityVo">
+        select id, invoice_uuid, name, type, unit, num, price, amount,
+        tax_rate, tax,  create_time from oa_invoice_commodity
+    </sql>
+
+    <select id="selectOaInvoiceCommodityList" parameterType="OaInvoiceCommodity" resultMap="OaInvoiceCommodityResult">
+        <include refid="selectOaInvoiceCommodityVo"/>
+        <where>
+            <if test="invoiceUuid != null  and invoiceUuid != ''"> and invoice_uuid = #{invoiceUuid}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="type != null  and type != ''"> and type = #{type}</if>
+            <if test="unit != null  and unit != ''"> and unit = #{unit}</if>
+            <if test="num != null "> and num = #{num}</if>
+            <if test="price != null "> and price = #{price}</if>
+            <if test="amount != null "> and amount = #{amount}</if>
+            <if test="taxRate != null  and taxRate != ''"> and tax_rate = #{taxRate}</if>
+            <if test="tax != null "> and tax = #{tax}</if>
+        </where>
+    </select>
+
+    <select id="selectOaInvoiceCommodityById" parameterType="Long" resultMap="OaInvoiceCommodityResult">
+        <include refid="selectOaInvoiceCommodityVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertOaInvoiceCommodity" parameterType="OaInvoiceCommodity" useGeneratedKeys="true" keyProperty="id">
+        insert into oa_invoice_commodity
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="invoiceUuid != null  and invoiceUuid != ''">invoice_uuid,</if>
+            <if test="name != null  and name != ''">name,</if>
+            <if test="type != null  and type != ''">type,</if>
+            <if test="unit != null  and unit != ''">unit,</if>
+            <if test="num != null ">num,</if>
+            <if test="price != null ">price,</if>
+            <if test="amount != null ">amount,</if>
+            <if test="taxRate != null  and taxRate != ''">tax_rate,</if>
+            <if test="tax != null ">tax,</if>
+            <if test="createTime != null ">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="invoiceUuid != null  and invoiceUuid != ''">#{invoiceUuid},</if>
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="type != null  and type != ''">#{type},</if>
+            <if test="unit != null  and unit != ''">#{unit},</if>
+            <if test="num != null ">#{num},</if>
+            <if test="price != null ">#{price},</if>
+            <if test="amount != null ">#{amount},</if>
+            <if test="taxRate != null  and taxRate != ''">#{taxRate},</if>
+            <if test="tax != null ">#{tax},</if>
+            <if test="createTime != null ">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOaInvoiceCommodity" parameterType="OaInvoiceCommodity">
+        update oa_invoice_commodity
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="invoiceUuid != null ">invoice_uuid = #{invoiceUuid},</if>
+            <if test="name != null ">name = #{name},</if>
+            <if test="type != null ">type = #{type},</if>
+            <if test="unit != null  ">unit = #{unit},</if>
+            <if test="num != null ">num = #{num},</if>
+            <if test="price != null ">price = #{price},</if>
+            <if test="amount != null ">amount = #{amount},</if>
+            <if test="taxRate != null ">tax_rate = #{taxRate},</if>
+            <if test="tax != null ">tax = #{tax},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOaInvoiceCommodityById" parameterType="Long">
+        delete from oa_invoice_commodity where id = #{id}
+    </delete>
+
+    <delete id="deleteOaInvoiceCommodityByinvoiceUuid" parameterType="String">
+        delete from oa_invoice_commodity where invoice_uuid = #{invoiceUuid}
+    </delete>
+
+
+    <delete id="deleteOaInvoiceCommodityByIds" parameterType="String">
+        delete from oa_invoice_commodity where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

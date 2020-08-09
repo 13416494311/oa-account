@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.invoice.mapper.OaTaxiTicketMapper">
+
+    <resultMap type="OaTaxiTicket" id="OaTaxiTicketResult">
+        <result property="id"    column="id"    />
+        <result property="invoiceUuid"    column="invoice_uuid"    />
+        <result property="uuid"    column="uuid"    />
+        <result property="accessWay"    column="access_way"    />
+        <result property="invoiceCode"    column="invoice_code"    />
+        <result property="invoiceNum"    column="invoice_num"    />
+        <result property="invoiceScanNum"    column="invoice_scan_num"    />
+        <result property="taxiNum"    column="taxi_num"    />
+        <result property="dateTimeStart"    column="date_time_start"    />
+        <result property="dateTimeEnd"    column="date_time_end"    />
+        <result property="date"    column="date"    />
+        <result property="time"    column="time"    />
+        <result property="fare"    column="fare"    />
+        <result property="fuelOilSurcharge"    column="fuel_oil_surcharge"    />
+        <result property="callServiceSurcharge"    column="call_service_surcharge"    />
+        <result property="sysAttId"    column="sys_att_id"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="repeatFlag"    column="repeat_flag"    />
+        <result property="abnormalFlag"    column="abnormal_flag"    />
+    </resultMap>
+
+    <sql id="selectOaTaxiTicketVo">
+        select id, invoice_uuid, uuid, access_way, invoice_code, invoice_num, invoice_scan_num, taxi_num, date_time_start, date_time_end, date, time, fare, fuel_oil_surcharge, call_service_surcharge, sys_att_id, create_time, repeat_flag, abnormal_flag from oa_taxi_ticket
+    </sql>
+
+    <select id="selectOaTaxiTicketList" parameterType="OaTaxiTicket" resultMap="OaTaxiTicketResult">
+        <include refid="selectOaTaxiTicketVo"/>
+        <where>
+            <if test="invoiceUuid != null  and invoiceUuid != ''"> and invoice_uuid = #{invoiceUuid}</if>
+            <if test="uuid != null  and uuid != ''"> and uuid = #{uuid}</if>
+            <if test="accessWay != null  and accessWay != ''"> and access_way = #{accessWay}</if>
+            <if test="invoiceCode != null  and invoiceCode != ''"> and invoice_code = #{invoiceCode}</if>
+            <if test="invoiceNum != null  and invoiceNum != ''"> and invoice_num = #{invoiceNum}</if>
+            <if test="invoiceScanNum != null  and invoiceScanNum != ''"> and invoice_scan_num = #{invoiceScanNum}</if>
+            <if test="taxiNum != null  and taxiNum != ''"> and taxi_num = #{taxiNum}</if>
+            <if test="dateTimeStart != null "> and date_time_start = #{dateTimeStart}</if>
+            <if test="dateTimeEnd != null "> and date_time_end = #{dateTimeEnd}</if>
+            <if test="date != null  and date != ''"> and date = #{date}</if>
+            <if test="time != null  and time != ''"> and time = #{time}</if>
+            <if test="fare != null "> and fare = #{fare}</if>
+            <if test="fuelOilSurcharge != null "> and fuel_oil_surcharge = #{fuelOilSurcharge}</if>
+            <if test="callServiceSurcharge != null "> and call_service_surcharge = #{callServiceSurcharge}</if>
+            <if test="sysAttId != null  and sysAttId != ''"> and sys_att_id = #{sysAttId}</if>
+            <if test="repeatFlag != null  and repeatFlag != ''"> and repeat_flag = #{repeatFlag}</if>
+            <if test="abnormalFlag != null  and abnormalFlag != ''"> and abnormal_flag = #{abnormalFlag}</if>
+        </where>
+    </select>
+
+    <select id="selectOaTaxiTicketById" parameterType="Long" resultMap="OaTaxiTicketResult">
+        <include refid="selectOaTaxiTicketVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertOaTaxiTicket" parameterType="OaTaxiTicket" useGeneratedKeys="true" keyProperty="id">
+        insert into oa_taxi_ticket
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="invoiceUuid != null  and invoiceUuid != ''">invoice_uuid,</if>
+            <if test="uuid != null  and uuid != ''">uuid,</if>
+            <if test="accessWay != null  and accessWay != ''">access_way,</if>
+            <if test="invoiceCode != null  and invoiceCode != ''">invoice_code,</if>
+            <if test="invoiceNum != null  and invoiceNum != ''">invoice_num,</if>
+            <if test="invoiceScanNum != null  and invoiceScanNum != ''">invoice_scan_num,</if>
+            <if test="taxiNum != null  and taxiNum != ''">taxi_num,</if>
+            <if test="dateTimeStart != null ">date_time_start,</if>
+            <if test="dateTimeEnd != null ">date_time_end,</if>
+            <if test="date != null  and date != ''">date,</if>
+            <if test="time != null  and time != ''">time,</if>
+            <if test="fare != null ">fare,</if>
+            <if test="fuelOilSurcharge != null ">fuel_oil_surcharge,</if>
+            <if test="callServiceSurcharge != null ">call_service_surcharge,</if>
+            <if test="sysAttId != null  and sysAttId != ''">sys_att_id,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="repeatFlag != null  and repeatFlag != ''">repeat_flag,</if>
+            <if test="abnormalFlag != null  and abnormalFlag != ''">abnormal_flag,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="invoiceUuid != null  and invoiceUuid != ''">#{invoiceUuid},</if>
+            <if test="uuid != null  and uuid != ''">#{uuid},</if>
+            <if test="accessWay != null  and accessWay != ''">#{accessWay},</if>
+            <if test="invoiceCode != null  and invoiceCode != ''">#{invoiceCode},</if>
+            <if test="invoiceNum != null  and invoiceNum != ''">#{invoiceNum},</if>
+            <if test="invoiceScanNum != null  and invoiceScanNum != ''">#{invoiceScanNum},</if>
+            <if test="taxiNum != null  and taxiNum != ''">#{taxiNum},</if>
+            <if test="dateTimeStart != null ">#{dateTimeStart},</if>
+            <if test="dateTimeEnd != null ">#{dateTimeEnd},</if>
+            <if test="date != null  and date != ''">#{date},</if>
+            <if test="time != null  and time != ''">#{time},</if>
+            <if test="fare != null ">#{fare},</if>
+            <if test="fuelOilSurcharge != null ">#{fuelOilSurcharge},</if>
+            <if test="callServiceSurcharge != null ">#{callServiceSurcharge},</if>
+            <if test="sysAttId != null  and sysAttId != ''">#{sysAttId},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="repeatFlag != null  and repeatFlag != ''">#{repeatFlag},</if>
+            <if test="abnormalFlag != null  and abnormalFlag != ''">#{abnormalFlag},</if>
+        </trim>
+    </insert>
+
+    <update id="updateOaTaxiTicket" parameterType="OaTaxiTicket">
+        update oa_taxi_ticket
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="invoiceUuid != null  and invoiceUuid != ''">invoice_uuid = #{invoiceUuid},</if>
+            <if test="uuid != null  and uuid != ''">uuid = #{uuid},</if>
+            <if test="accessWay != null  and accessWay != ''">access_way = #{accessWay},</if>
+            <if test="invoiceCode != null  and invoiceCode != ''">invoice_code = #{invoiceCode},</if>
+            <if test="invoiceNum != null  and invoiceNum != ''">invoice_num = #{invoiceNum},</if>
+            <if test="invoiceScanNum != null  and invoiceScanNum != ''">invoice_scan_num = #{invoiceScanNum},</if>
+            <if test="taxiNum != null  and taxiNum != ''">taxi_num = #{taxiNum},</if>
+            <if test="dateTimeStart != null ">date_time_start = #{dateTimeStart},</if>
+            <if test="dateTimeEnd != null ">date_time_end = #{dateTimeEnd},</if>
+            <if test="date != null  and date != ''">date = #{date},</if>
+            <if test="time != null  and time != ''">time = #{time},</if>
+            <if test="fare != null ">fare = #{fare},</if>
+            <if test="fuelOilSurcharge != null ">fuel_oil_surcharge = #{fuelOilSurcharge},</if>
+            <if test="callServiceSurcharge != null ">call_service_surcharge = #{callServiceSurcharge},</if>
+            <if test="sysAttId != null  and sysAttId != ''">sys_att_id = #{sysAttId},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="repeatFlag != null  and repeatFlag != ''">repeat_flag = #{repeatFlag},</if>
+            <if test="abnormalFlag != null  and abnormalFlag != ''">abnormal_flag = #{abnormalFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOaTaxiTicketById" parameterType="Long">
+        delete from oa_taxi_ticket where id = #{id}
+    </delete>
+
+    <delete id="deleteOaTaxiTicketByIds" parameterType="String">
+        delete from oa_taxi_ticket where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

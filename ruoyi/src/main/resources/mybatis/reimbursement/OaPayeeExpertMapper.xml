@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.reimbursement.mapper.OaPayeeExpertMapper">
+
+    <resultMap type="OaPayeeExpert" id="OaPayeeExpertResult">
+        <result property="id"    column="id"    />
+        <result property="uuid"    column="uuid"    />
+        <result property="applyUuid"    column="apply_uuid"    />
+        <result property="name"    column="name"    />
+        <result property="company"    column="company"    />
+        <result property="area"    column="area"    />
+        <result property="cardNo"    column="card_no"    />
+        <result property="sysAttId"    column="sys_att_id"    />
+        <result property="phone"    column="phone"    />
+        <result property="bank"    column="bank"    />
+        <result property="bankNo"    column="bank_no"    />
+        <result property="preTax"    column="pre_tax"    />
+        <result property="aftTax"    column="aft_tax"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectOaPayeeExpertVo">
+        select id, uuid ,apply_uuid, name, company, area , card_no, sys_att_id,
+        phone, bank, bank_no, pre_tax, aft_tax, create_time from oa_payee_expert
+    </sql>
+
+    <select id="selectOaPayeeExpertList" parameterType="OaPayeeExpert" resultMap="OaPayeeExpertResult">
+        <include refid="selectOaPayeeExpertVo"/>
+        <where>
+            <if test="uuid != null  and uuid != ''"> and uuid = #{uuid}</if>
+            <if test="applyUuid != null  and applyUuid != ''"> and apply_uuid = #{applyUuid}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="company != null  and company != ''"> and company = #{company}</if>
+            <if test="area != null  and area != ''"> and area = #{area}</if>
+            <if test="cardNo != null  and cardNo != ''"> and card_no = #{cardNo}</if>
+            <if test="sysAttId != null  and sysAttId != ''"> and sys_att_id = #{sysAttId}</if>
+            <if test="phone != null  and phone != ''"> and phone = #{phone}</if>
+            <if test="bank != null  and bank != ''"> and bank = #{bank}</if>
+            <if test="bankNo != null  and bankNo != ''"> and bank_no = #{bankNo}</if>
+            <if test="preTax != null "> and pre_tax = #{preTax}</if>
+            <if test="aftTax != null "> and aft_tax = #{aftTax}</if>
+        </where>
+    </select>
+
+    <select id="selectOaPayeeExpertByCardNo" parameterType="String" resultMap="OaPayeeExpertResult">
+        <include refid="selectOaPayeeExpertVo"/>
+        <where>
+            and apply_uuid = #{applyUuid}
+            and card_no = #{cardNo}
+        </where>
+    </select>
+
+    <select id="selectOaPayeeExpertById" parameterType="Long" resultMap="OaPayeeExpertResult">
+        <include refid="selectOaPayeeExpertVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertOaPayeeExpert" parameterType="OaPayeeExpert" useGeneratedKeys="true" keyProperty="id">
+        insert into oa_payee_expert
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null  and uuid != ''">uuid,</if>
+            <if test="applyUuid != null  and applyUuid != ''">apply_uuid,</if>
+            <if test="name != null  and name != ''">name,</if>
+            <if test="company != null  and company != ''">company,</if>
+            <if test="area != null  and area != ''">area,</if>
+            <if test="cardNo != null  and cardNo != ''">card_no,</if>
+            <if test="sysAttId != null  and sysAttId != ''">sys_att_id,</if>
+            <if test="phone != null  and phone != ''">phone,</if>
+            <if test="bank != null  and bank != ''">bank,</if>
+            <if test="bankNo != null  and bankNo != ''">bank_no,</if>
+            <if test="preTax != null ">pre_tax,</if>
+            <if test="aftTax != null ">aft_tax,</if>
+            <if test="createTime != null ">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null  and uuid != ''">#{uuid},</if>
+            <if test="applyUuid != null  and applyUuid != ''">#{applyUuid},</if>
+            <if test="name != null  and name != ''">#{name},</if>
+            <if test="company != null  and company != ''">#{company},</if>
+            <if test="area != null  and area != ''">#{area},</if>
+            <if test="cardNo != null  and cardNo != ''">#{cardNo},</if>
+            <if test="sysAttId != null  and sysAttId != ''">#{sysAttId},</if>
+            <if test="phone != null  and phone != ''">#{phone},</if>
+            <if test="bank != null  and bank != ''">#{bank},</if>
+            <if test="bankNo != null  and bankNo != ''">#{bankNo},</if>
+            <if test="preTax != null ">#{preTax},</if>
+            <if test="aftTax != null ">#{aftTax},</if>
+            <if test="createTime != null ">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOaPayeeExpert" parameterType="OaPayeeExpert">
+        update oa_payee_expert
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="uuid != null ">uuid = #{uuid},</if>
+            <if test="applyUuid != null ">apply_uuid = #{applyUuid},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="company != null ">company = #{company},</if>
+            <if test="area != null ">area = #{area},</if>
+            <if test="cardNo != null ">card_no = #{cardNo},</if>
+            <if test="sysAttId != null ">sys_att_id = #{sysAttId},</if>
+            <if test="phone != null  ">phone = #{phone},</if>
+            <if test="bank != null  ">bank = #{bank},</if>
+            <if test="bankNo != null ">bank_no = #{bankNo},</if>
+            <if test="preTax != null ">pre_tax = #{preTax},</if>
+            <if test="aftTax != null ">aft_tax = #{aftTax},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOaPayeeExpertById" parameterType="Long">
+        delete from oa_payee_expert where id = #{id}
+    </delete>
+
+    <delete id="deleteOaPayeeExpertByIds" parameterType="String">
+        delete from oa_payee_expert where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

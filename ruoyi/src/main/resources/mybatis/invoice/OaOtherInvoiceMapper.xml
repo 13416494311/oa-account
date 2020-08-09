@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.invoice.mapper.OaOtherInvoiceMapper">
+
+    <resultMap type="OaOtherInvoice" id="OaOtherInvoiceResult">
+        <result property="id"    column="id"    />
+        <result property="invoiceUuid"    column="invoice_uuid"    />
+        <result property="uuid"    column="uuid"    />
+        <result property="accessWay"    column="access_way"    />
+        <result property="invoiceType"    column="invoice_type"    />
+        <result property="invoiceNumber"    column="invoice_number"    />
+        <result property="invoiceMoney"    column="invoice_money"    />
+        <result property="invoiceDate"    column="invoice_date"    />
+        <result property="remarks"    column="remarks"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="sysAttId"    column="sys_att_id"    />
+        <result property="abnormalFlag"    column="abnormal_flag"    />
+    </resultMap>
+
+    <sql id="selectOaOtherInvoiceVo">
+        select id, invoice_uuid, uuid, access_way, invoice_type, invoice_number,
+        invoice_money, invoice_date, remarks, create_time, sys_att_id,abnormal_flag
+        from oa_other_invoice
+    </sql>
+
+    <select id="selectOaOtherInvoiceList" parameterType="OaOtherInvoice" resultMap="OaOtherInvoiceResult">
+        <include refid="selectOaOtherInvoiceVo"/>
+        <where>
+            <if test="invoiceUuid != null  and invoiceUuid != ''"> and invoice_uuid = #{invoiceUuid}</if>
+            <if test="uuid != null  and uuid != ''"> and uuid = #{uuid}</if>
+            <if test="accessWay != null  and accessWay != ''"> and access_way = #{accessWay}</if>
+            <if test="invoiceType != null  and invoiceType != ''"> and invoice_type = #{invoiceType}</if>
+            <if test="invoiceNumber != null  and invoiceNumber != ''"> and invoice_number = #{invoiceNumber}</if>
+            <if test="invoiceMoney != null "> and invoice_money = #{invoiceMoney}</if>
+            <if test="invoiceDate != null "> and invoice_date = #{invoiceDate}</if>
+            <if test="remarks != null  and remarks != ''"> and remarks = #{remarks}</if>
+            <if test="sysAttId != null "> and sys_att_id = #{sysAttId}</if>
+            <if test="abnormalFlag != null "> and abnormal_flag = #{abnormalFlag}</if>
+        </where>
+    </select>
+
+    <select id="selectOaOtherInvoiceById" parameterType="Long" resultMap="OaOtherInvoiceResult">
+        <include refid="selectOaOtherInvoiceVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertOaOtherInvoice" parameterType="OaOtherInvoice" useGeneratedKeys="true" keyProperty="id">
+        insert into oa_other_invoice
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="invoiceUuid != null  and invoiceUuid != ''">invoice_uuid,</if>
+            <if test="uuid != null  and uuid != ''">uuid,</if>
+            <if test="accessWay != null  and accessWay != ''">access_way,</if>
+            <if test="invoiceType != null  and invoiceType != ''">invoice_type,</if>
+            <if test="invoiceNumber != null  and invoiceNumber != ''">invoice_number,</if>
+            <if test="invoiceMoney != null ">invoice_money,</if>
+            <if test="invoiceDate != null ">invoice_date,</if>
+            <if test="remarks != null  and remarks != ''">remarks,</if>
+            <if test="createTime != null ">create_time,</if>
+            <if test="sysAttId != null ">sys_att_id,</if>
+            <if test="abnormalFlag != null  and abnormalFlag != ''">abnormal_flag,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="invoiceUuid != null  and invoiceUuid != ''">#{invoiceUuid},</if>
+            <if test="uuid != null  and uuid != ''">#{uuid},</if>
+            <if test="accessWay != null  and accessWay != ''">#{accessWay},</if>
+            <if test="invoiceType != null  and invoiceType != ''">#{invoiceType},</if>
+            <if test="invoiceNumber != null  and invoiceNumber != ''">#{invoiceNumber},</if>
+            <if test="invoiceMoney != null ">#{invoiceMoney},</if>
+            <if test="invoiceDate != null ">#{invoiceDate},</if>
+            <if test="remarks != null  and remarks != ''">#{remarks},</if>
+            <if test="createTime != null ">#{createTime},</if>
+            <if test="sysAttId != null ">#{sysAttId},</if>
+            <if test="abnormalFlag != null ">#{abnormalFlag},</if>
+        </trim>
+    </insert>
+
+    <update id="updateOaOtherInvoice" parameterType="OaOtherInvoice">
+        update oa_other_invoice
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="invoiceUuid != null  and invoiceUuid != ''">invoice_uuid = #{invoiceUuid},</if>
+            <if test="uuid != null  and uuid != ''">uuid = #{uuid},</if>
+            <if test="accessWay != null  and accessWay != ''">access_way = #{accessWay},</if>
+            <if test="invoiceType != null  and invoiceType != ''">invoice_type = #{invoiceType},</if>
+            <if test="invoiceNumber != null  and invoiceNumber != ''">invoice_number = #{invoiceNumber},</if>
+            <if test="invoiceMoney != null ">invoice_money = #{invoiceMoney},</if>
+            <if test="invoiceDate != null ">invoice_date = #{invoiceDate},</if>
+            <if test="remarks != null  and remarks != ''">remarks = #{remarks},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+            <if test="sysAttId != null ">sys_att_id = #{sysAttId},</if>
+            <if test="abnormalFlag != null ">abnormal_flag = #{abnormalFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOaOtherInvoiceById" parameterType="Long">
+        delete from oa_other_invoice where id = #{id}
+    </delete>
+
+    <delete id="deleteOaOtherInvoiceByIds" parameterType="String">
+        delete from oa_other_invoice where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

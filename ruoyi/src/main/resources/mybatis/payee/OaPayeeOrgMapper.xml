@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.payee.mapper.OaPayeeOrgMapper">
+
+    <resultMap type="OaPayeeOrg" id="OaPayeeOrgResult">
+        <result property="id"    column="id"    />
+        <result property="orgName"    column="org_name"    />
+        <result property="orgCode"    column="org_code"    />
+        <result property="bank"    column="bank"    />
+        <result property="bankAccount"    column="bank_account"    />
+        <result property="address"    column="address"    />
+        <result property="phone"    column="phone"    />
+        <result property="telephone"    column="telephone"    />
+        <result property="deptId"    column="dept_id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectOaPayeeOrgVo">
+        select o.id, o.org_name, o.org_code, o.bank, o.bank_account, o.address, o.phone, o.telephone, o.dept_id, o.user_id, o.create_time from oa_payee_org o
+    </sql>
+
+    <select id="selectOaPayeeOrgList" parameterType="OaPayeeOrg" resultMap="OaPayeeOrgResult">
+        <include refid="selectOaPayeeOrgVo"/>
+        <where>
+            <if test="orgName != null  and orgName != ''"> and org_name like concat('%', #{orgName}, '%')</if>
+            <if test="orgCode != null  and orgCode != ''"> and org_code like concat('%', #{orgCode}, '%')</if>
+            <if test="dataScope != null  and dataScope != ''"> ${dataScope}</if>
+        </where>
+    </select>
+
+    <select id="selectOaPayeeOrgById" parameterType="Long" resultMap="OaPayeeOrgResult">
+        <include refid="selectOaPayeeOrgVo"/>
+        where id = #{id}
+    </select>
+
+    <insert id="insertOaPayeeOrg" parameterType="OaPayeeOrg" useGeneratedKeys="true" keyProperty="id">
+        insert into oa_payee_org
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="orgName != null  and orgName != ''">org_name,</if>
+            <if test="orgCode != null  and orgCode != ''">org_code,</if>
+            <if test="bank != null  and bank != ''">bank,</if>
+            <if test="bankAccount != null  and bankAccount != ''">bank_account,</if>
+            <if test="address != null  and address != ''">address,</if>
+            <if test="phone != null  and phone != ''">phone,</if>
+            <if test="telephone != null  and telephone != ''">telephone,</if>
+            <if test="deptId != null ">dept_id,</if>
+            <if test="userId != null ">user_id,</if>
+            <if test="createTime != null ">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="orgName != null  and orgName != ''">#{orgName},</if>
+            <if test="orgCode != null  and orgCode != ''">#{orgCode},</if>
+            <if test="bank != null  and bank != ''">#{bank},</if>
+            <if test="bankAccount != null  and bankAccount != ''">#{bankAccount},</if>
+            <if test="address != null  and address != ''">#{address},</if>
+            <if test="phone != null  and phone != ''">#{phone},</if>
+            <if test="telephone != null  and telephone != ''">#{telephone},</if>
+            <if test="deptId != null ">#{deptId},</if>
+            <if test="userId != null ">#{userId},</if>
+            <if test="createTime != null ">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOaPayeeOrg" parameterType="OaPayeeOrg">
+        update oa_payee_org
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orgName != null  and orgName != ''">org_name = #{orgName},</if>
+            <if test="orgCode != null  and orgCode != ''">org_code = #{orgCode},</if>
+            <if test="bank != null  and bank != ''">bank = #{bank},</if>
+            <if test="bankAccount != null  and bankAccount != ''">bank_account = #{bankAccount},</if>
+            <if test="address != null  and address != ''">address = #{address},</if>
+            <if test="phone != null  and phone != ''">phone = #{phone},</if>
+            <if test="telephone != null  and telephone != ''">telephone = #{telephone},</if>
+            <if test="deptId != null ">dept_id = #{deptId},</if>
+            <if test="userId != null ">user_id = #{userId},</if>
+            <if test="createTime != null ">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOaPayeeOrgById" parameterType="Long">
+        delete from oa_payee_org where id = #{id}
+    </delete>
+
+    <delete id="deleteOaPayeeOrgByIds" parameterType="String">
+        delete from oa_payee_org where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>
